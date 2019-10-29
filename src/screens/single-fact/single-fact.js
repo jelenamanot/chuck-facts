@@ -14,7 +14,7 @@ const SingleFact = ({ match, getSingleFact, setSingleFactEmpty, activeFact }) =>
         return () => {
             setSingleFactEmpty();
         };
-    }, []);
+    }, [match, getSingleFact, setSingleFactEmpty]);
 
     return (
         <div>

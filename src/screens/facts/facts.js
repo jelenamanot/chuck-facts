@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 /* actions */
@@ -10,29 +10,30 @@ import FactListItem from '../../components/fact-list-item/fact-list-item';
 /* utils */
 import { setFactToLocalStorage, getItemFromLocalStorage } from '../../utils/info-helper';
 
-class Facts extends React.PureComponent {
-    componentDidMount() {
-        this.props.getViewedFacts();
-    }
+let debounce;
 
-    componentWillUnmount() {
-        this.props.setFactsEmpty();
-        if (this.debounce) {
-            clearTimeout(this.debounce);
-        }
-    }
+const Facts = ({ facts, getFacts, getViewedFacts, setFactsEmpty, viewedFacts }) => {
+    useEffect(() => {
+        getViewedFacts();
+        return () => {
+            setFactsEmpty();
+            if (debounce) {
+                clearTimeout(debounce);
+            }
+        };
+    }, [getViewedFacts, setFactsEmpty]);
 
-    onChange = (e) => {
+    const onChange = (e) => {
         const query = e.target.value;
-        if (this.debounce) {
-            clearTimeout(this.debounce);
+        if (debounce) {
+            clearTimeout(debounce);
         }
         if (query.length >= 3) {
-            this.debounce = setTimeout(() => this.props.getFacts(query), 500);
+            debounce = setTimeout(() => getFacts(query), 500);
         }
     };
 
-    onItemClick = (fact) => {
+    const onItemClick = (fact) => {
         const viewedFacts = getItemFromLocalStorage('viewedFacts');
 
         if (viewedFacts && viewedFacts.length){
@@ -45,36 +46,36 @@ class Facts extends React.PureComponent {
         }
     };
 
-    render() {
-        const isRandom = !getItemFromLocalStorage('viewedFacts');
-        return (
-            <React.Fragment>
-                <Search
-                    onChange={this.onChange}
-                    searchResults={this.props.facts}
-                    onItemClick={this.onItemClick}
-                />
-                <Card
-                    title={isRandom ? "We are showing random facts" : "Recently viewed facts"}
-                    subtitle={isRandom ? "Try searching for some fact above" : "Last 10 results"}
-                >
-                    {this.props.viewedFacts.map(fact => (
-                        <FactListItem
-                            key={fact.id}
-                            item={fact}
-                            onItemClick={this.onItemClick}
-                        />)
-                    )}
-                </Card>
-            </React.Fragment>
-        )
-    }
-}
+    const isRandom = !getItemFromLocalStorage('viewedFacts');
+
+    return (
+        <React.Fragment>
+            <Search
+                onChange={onChange}
+                searchResults={facts}
+                onItemClick={onItemClick}
+            />
+            <Card
+                title={isRandom ? "We are showing random facts" : "Recently viewed facts"}
+                subtitle={isRandom ? "Try searching for some fact above" : "Last 10 results"}
+            >
+                {viewedFacts.map(fact => (
+                    <FactListItem
+                        key={fact.id}
+                        item={fact}
+                        onItemClick={onItemClick}
+                    />)
+                )}
+            </Card>
+        </React.Fragment>
+    )
+};
 
 Facts.propTypes = {
     facts: PropTypes.array.isRequired,
     getFacts: PropTypes.func.isRequired,
     getViewedFacts: PropTypes.func.isRequired,
+    setFactsEmpty: PropTypes.func.isRequired,
     viewedFacts: PropTypes.array.isRequired
 };
 

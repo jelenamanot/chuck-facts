@@ -23,6 +23,13 @@ const Search = ({ onChange, onItemClick, searchResults }) => {
 
     const onFocus = () => setStateResultsShown(true);
 
+    const onKeyPress = (e) => {
+        const ENTER_KEY_CODE = 13;
+        if (e.which === ENTER_KEY_CODE) {
+            e.preventDefault();
+        }
+    };
+
     return (
         <form
             ref={node}
@@ -36,6 +43,7 @@ const Search = ({ onChange, onItemClick, searchResults }) => {
                     placeholder="Type anything"
                     onFocus={onFocus}
                     onChange={onChange}
+                    onKeyPress={onKeyPress}
                 />
             </div>
             {areResultsShown && <FactList items={searchResults} onItemClick={onItemClick} />}
