@@ -33,7 +33,16 @@ class Facts extends React.Component {
     };
 
     onItemClick = (fact) => {
-        setFactToLocalStorage(fact, 'viewedFacts');
+        const viewedFacts = getItemFromLocalStorage('viewedFacts');
+
+        if (viewedFacts && viewedFacts.length){
+            let foundFact = viewedFacts.find(viewedFact => viewedFact.id === fact.id);
+            if(!foundFact) {
+                setFactToLocalStorage(fact, 'viewedFacts');
+            }
+        } else {
+            setFactToLocalStorage(fact, 'viewedFacts');
+        }
     };
 
     render() {
