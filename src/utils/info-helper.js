@@ -4,6 +4,18 @@ export const setItemToLocalStorage = (storageKey, item) => localStorage.setItem(
 
 export const setFactToLocalStorage = (fact) => {
     const currentFacts = getItemFromLocalStorage('viewedFacts');
-    const updatedFacts =  currentFacts ? [fact, ...currentFacts] : [fact];
+    let updatedFacts;
+    // TODO switch to 10
+    const maxLength = 3;
+
+    if (currentFacts && currentFacts.length >= maxLength) {
+        currentFacts.pop();
+        updatedFacts = [fact, ...currentFacts];
+    } else if (!currentFacts) {
+        updatedFacts = [fact]
+    } else {
+        updatedFacts = [fact, ...currentFacts];
+    }
+
     setItemToLocalStorage('viewedFacts', updatedFacts);
 };
