@@ -1,7 +1,8 @@
 import { ActionTypes } from './facts-actions';
 
 const initialState = {
-    facts: null,
+    facts: [],
+    viewedFacts: []
 };
 
 export default function factsReducer(state = initialState, action) {
@@ -10,6 +11,19 @@ export default function factsReducer(state = initialState, action) {
             return {
                 ...state,
                 facts: action.facts
+            };
+        }
+        case ActionTypes.SET_FACTS_EMPTY: {
+            return {
+                ...state,
+                facts: initialState.facts
+            };
+        }
+        case ActionTypes.SET_VIEWED_FACT: {
+            // TODO Logic about max 10
+            return {
+                ...state,
+                viewedFacts: [...state.viewedFacts, action.fact],
             };
         }
         default:
