@@ -19,11 +19,18 @@ export default function factsReducer(state = initialState, action) {
                 facts: initialState.facts
             };
         }
+        // TODO This should be deleted
         case ActionTypes.SET_VIEWED_FACT: {
             // TODO Logic about max 10
             return {
                 ...state,
                 viewedFacts: [...state.viewedFacts, action.fact],
+            };
+        }
+        case ActionTypes.SET_VIEWED_FACTS: {
+            return {
+                ...state,
+                viewedFacts: action.viewedFacts
             };
         }
         default:

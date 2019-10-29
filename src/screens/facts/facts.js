@@ -2,13 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 /* actions */
-import { getFacts, setViewedFact, setFactsEmpty } from './facts-actions';
+import { getFacts, setViewedFact, setFactsEmpty, getViewedFacts } from './facts-actions';
 /* components */
 import Search from '../../components/search/search';
 import Card from '../../components/card/card';
 import FactListItem from '../../components/fact-list-item/fact-list-item';
 
 class Facts extends React.Component {
+    componentDidMount() {
+        this.props.getViewedFacts();
+    }
+
     componentWillUnmount() {
         this.props.setFactsEmpty();
         if (this.debounce) {
@@ -26,20 +30,26 @@ class Facts extends React.Component {
         }
     };
 
+    onItemClick = (fact) => {
+        const currentLocalStorage = JSON.parse(localStorage.getItem('viewedFacts'));
+        const updated =  currentLocalStorage ? [fact, ...currentLocalStorage] : [fact];
+        localStorage.setItem('viewedFacts', JSON.stringify(updated));
+    };
+
     render() {
-        const isRandom = true;
+        const isRandom = !localStorage.getItem('viewedFacts');
         return (
             <div>
                 <Search
                     onChange={this.onChange}
                     searchResults={this.props.facts}
-                    onItemClick={(fact) => this.props.setViewedFact(fact)}
+                    onItemClick={this.onItemClick}
                 />
                 <Card
                     title={isRandom ? "We are showing random facts" : "Recently viewed facts"}
                     subtitle={isRandom ? "Try searching for some fact above" : "Last 10 results"}
                 >
-                    {this.props.viewedFacts.map(fact => <FactListItem key={fact.id} item={fact} onItemClick={() => {}} />)}
+                    {this.props.viewedFacts.map(fact => <FactListItem key={fact.id} item={fact} onItemClick={this.onItemClick} />)}
                 </Card>
             </div>
         )
@@ -49,7 +59,8 @@ class Facts extends React.Component {
 Facts.propTypes = {
     facts: PropTypes.array.isRequired,
     getFacts: PropTypes.func.isRequired,
-    setViewedFact: PropTypes.func.isRequired
+    setViewedFact: PropTypes.func.isRequired,
+    getViewedFacts: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -64,6 +75,7 @@ function mapDispatchToProps(dispatch) {
         getFacts: (query) => getFacts(dispatch, query),
         setViewedFact: (fact) => setViewedFact(dispatch, fact),
         setFactsEmpty: () => setFactsEmpty(dispatch),
+        getViewedFacts: () => getViewedFacts(dispatch)
     };
 }
 
