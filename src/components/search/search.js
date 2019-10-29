@@ -1,50 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 /* components */
 import FactList from '../fact-list/fact-list';
 
-class Search  extends React.PureComponent {
-    state = {
-        areResultsShown: false
+const Search = ({ onChange, onItemClick, searchResults }) => {
+    const [areResultsShown, setStateResultsShown] = useState(false);
+    const node = useRef(null);
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside, false);
+        return () => {
+            document.addEventListener('mousedown', handleClickOutside, false);
+        };
+    }, []);
+
+    const handleClickOutside = (e) => {
+        if (node && node.current && node.current.contains(e.target)) {
+            return;
+        }
+        setStateResultsShown(false);
     };
 
-    componentDidMount() {
-        document.addEventListener('mousedown', this.handleClickOutside, false);
-    }
+    const onFocus = () => setStateResultsShown(true);
 
-    componentWillUnmount() {
-        document.addEventListener('mousedown', this.handleClickOutside, false);
-    }
-
-    handleClickOutside = (e) => {
-        if (this.node && this.node.contains(e.target)) { return; }
-        this.setState({ areResultsShown: false})
-    };
-
-    onFocus = () => this.setState({ areResultsShown: true });
-
-    render() {
-        const { onChange, searchResults, onItemClick } = this.props;
-        return(
-            <form
-                ref={node => this.node = node}
-                className="search w-50 position-relative mx-auto"
-            >
-                <div className="form-group">
-                    <h3>Search for Chuck facts</h3>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Type anything"
-                        onFocus={this.onFocus}
-                        onChange={onChange}
-                    />
-                </div>
-                {this.state.areResultsShown && <FactList items={searchResults} onItemClick={onItemClick} />}
-            </form>
-        )
-    }
-}
+    return (
+        <form
+            ref={node}
+            className="search w-50 position-relative mx-auto"
+        >
+            <div className="form-group">
+                <h3>Search for Chuck facts</h3>
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Type anything"
+                    onFocus={onFocus}
+                    onChange={onChange}
+                />
+            </div>
+            {areResultsShown && <FactList items={searchResults} onItemClick={onItemClick} />}
+        </form>
+    )
+};
 
 Search.propTypes = {
     onChange: PropTypes.func.isRequired,

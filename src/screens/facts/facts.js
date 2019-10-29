@@ -10,7 +10,7 @@ import FactListItem from '../../components/fact-list-item/fact-list-item';
 /* utils */
 import { setFactToLocalStorage, getItemFromLocalStorage } from '../../utils/info-helper';
 
-class Facts extends React.Component {
+class Facts extends React.PureComponent {
     componentDidMount() {
         this.props.getViewedFacts();
     }
