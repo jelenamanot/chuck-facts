@@ -4,8 +4,8 @@ import { ActionTypes } from './facts-actions';
 /* services */
 import FactsService from '../../services/facts-service';
 
-function* getFacts() {
-    const facts = yield FactsService.get();
+function* getFacts(action) {
+    const facts = yield FactsService.get(action.query);
     if (facts) {
         yield put({ type: ActionTypes.SET_FACTS, facts });
     }

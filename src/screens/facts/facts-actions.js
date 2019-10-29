@@ -4,9 +4,10 @@ export const ActionTypes = {
     GET_RANDOM_FACTS: 'GET_RANDOM_FACTS',
 };
 
-export function getFacts(dispatch) {
+export function getFacts(dispatch, query) {
     dispatch({
-        type: ActionTypes.GET_FACTS
+        type: ActionTypes.GET_FACTS,
+        query
     });
 }
 

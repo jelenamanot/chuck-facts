@@ -1,7 +1,7 @@
 import { ActionTypes } from './facts-actions';
 
 const initialState = {
-    facts: [],
+    facts: null,
 };
 
 export default function factsReducer(state = initialState, action) {

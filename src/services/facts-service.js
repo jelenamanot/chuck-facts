@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const BASE_URL = 'https://api.chucknorris.io';
+
 class FactsService {
-    get(query = 'code') {
-        return axios.get(`https://api.chucknorris.io/jokes/search?query=${query}`).then(response => (response.data)).catch(error => (error));
+    get(query) {
+        return axios.get(`${BASE_URL}/jokes/search?query=${query}`).then(response => (response.data)).catch(error => (error));
     };
 }
 
