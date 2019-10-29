@@ -3,6 +3,8 @@ import { takeEvery, put } from 'redux-saga/effects';
 import { ActionTypes } from './facts-actions';
 /* services */
 import FactsService from '../../services/facts-service';
+/* utils */
+import { getItemFromLocalStorage } from '../../utils/info-helper';
 
 function* getFacts(action) {
     const facts = yield FactsService.get(action.query);
@@ -12,14 +14,14 @@ function* getFacts(action) {
 }
 
 function* getViewedFacts() {
-    if (localStorage.getItem('viewedFacts') === null) {
+    if (getItemFromLocalStorage('viewedFacts') === null) {
         const randomFact = yield FactsService.getRandom();
         if (randomFact) {
             yield put({ type: ActionTypes.SET_VIEWED_FACTS, viewedFacts: [randomFact] });
         }
     } else {
-        const viewedFacts = localStorage.getItem('viewedFacts');
-        yield put({ type: ActionTypes.SET_VIEWED_FACTS, viewedFacts: JSON.parse(viewedFacts)});
+        const viewedFacts = getItemFromLocalStorage('viewedFacts');
+        yield put({ type: ActionTypes.SET_VIEWED_FACTS, viewedFacts });
     }
 }
 
