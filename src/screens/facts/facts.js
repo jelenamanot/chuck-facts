@@ -7,6 +7,8 @@ import { getFacts, setViewedFact, setFactsEmpty, getViewedFacts } from './facts-
 import Search from '../../components/search/search';
 import Card from '../../components/card/card';
 import FactListItem from '../../components/fact-list-item/fact-list-item';
+/* helpers */
+import { setFactToLocalStorage, getItemFromLocalStorage } from '../../utils/info-helper';
 
 class Facts extends React.Component {
     componentDidMount() {
@@ -31,13 +33,20 @@ class Facts extends React.Component {
     };
 
     onItemClick = (fact) => {
-        const currentLocalStorage = JSON.parse(localStorage.getItem('viewedFacts'));
-        const updated =  currentLocalStorage ? [fact, ...currentLocalStorage] : [fact];
-        localStorage.setItem('viewedFacts', JSON.stringify(updated));
+        const viewedFacts = getItemFromLocalStorage('viewedFacts');
+
+        if (viewedFacts && viewedFacts.length){
+            let foundFact = viewedFacts.find(viewedFact => viewedFact.id === fact.id);
+            if(!foundFact) {
+                setFactToLocalStorage(fact, 'viewedFacts');
+            }
+        } else {
+            setFactToLocalStorage(fact, 'viewedFacts');
+        }
     };
 
     render() {
-        const isRandom = !localStorage.getItem('viewedFacts');
+        const isRandom = !getItemFromLocalStorage('viewedFacts');
         return (
             <div>
                 <Search
