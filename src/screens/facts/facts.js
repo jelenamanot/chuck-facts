@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 /* actions */
-import { getFacts, setViewedFact, setFactsEmpty, getViewedFacts } from './facts-actions';
+import { getFacts, getViewedFacts, setFactsEmpty } from './facts-actions';
 /* components */
 import Search from '../../components/search/search';
 import Card from '../../components/card/card';
 import FactListItem from '../../components/fact-list-item/fact-list-item';
-/* helpers */
+/* utils */
 import { setFactToLocalStorage, getItemFromLocalStorage } from '../../utils/info-helper';
 
 class Facts extends React.Component {
@@ -48,7 +48,7 @@ class Facts extends React.Component {
     render() {
         const isRandom = !getItemFromLocalStorage('viewedFacts');
         return (
-            <div>
+            <React.Fragment>
                 <Search
                     onChange={this.onChange}
                     searchResults={this.props.facts}
@@ -58,9 +58,15 @@ class Facts extends React.Component {
                     title={isRandom ? "We are showing random facts" : "Recently viewed facts"}
                     subtitle={isRandom ? "Try searching for some fact above" : "Last 10 results"}
                 >
-                    {this.props.viewedFacts.map(fact => <FactListItem key={fact.id} item={fact} onItemClick={this.onItemClick} />)}
+                    {this.props.viewedFacts.map(fact => (
+                        <FactListItem
+                            key={fact.id}
+                            item={fact}
+                            onItemClick={this.onItemClick}
+                        />)
+                    )}
                 </Card>
-            </div>
+            </React.Fragment>
         )
     }
 }
@@ -68,8 +74,8 @@ class Facts extends React.Component {
 Facts.propTypes = {
     facts: PropTypes.array.isRequired,
     getFacts: PropTypes.func.isRequired,
-    setViewedFact: PropTypes.func.isRequired,
-    getViewedFacts: PropTypes.func.isRequired
+    getViewedFacts: PropTypes.func.isRequired,
+    viewedFacts: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
@@ -82,9 +88,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         getFacts: (query) => getFacts(dispatch, query),
-        setViewedFact: (fact) => setViewedFact(dispatch, fact),
-        setFactsEmpty: () => setFactsEmpty(dispatch),
-        getViewedFacts: () => getViewedFacts(dispatch)
+        getViewedFacts: () => getViewedFacts(dispatch),
+        setFactsEmpty: () => setFactsEmpty(dispatch)
     };
 }
 

@@ -3,7 +3,6 @@ export const ActionTypes = {
     SET_FACTS: 'SET_FACTS',
     GET_VIEWED_FACTS: 'GET_VIEWED_FACTS',
     SET_VIEWED_FACTS: 'SET_VIEWED_FACTS',
-    SET_VIEWED_FACT: 'SET_VIEWED_FACT',
     SET_FACTS_EMPTY: 'SET_FACTS_EMPTY'
 };
 
@@ -22,12 +21,5 @@ export function setFactsEmpty(dispatch) {
 export function getViewedFacts(dispatch) {
     dispatch({
         type: ActionTypes.GET_VIEWED_FACTS
-    });
-}
-
-export function setViewedFact(dispatch, fact) {
-    dispatch({
-        type: ActionTypes.SET_VIEWED_FACT,
-        fact
     });
 }

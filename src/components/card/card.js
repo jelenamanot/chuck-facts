@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Card = ({ children, title, subtitle }) => (
+const Card = ({ children, subtitle, title  }) => (
     <div className="card">
         <div className="card-body">
             <h4 className="card-title">{title}</h4>
@@ -12,8 +12,9 @@ const Card = ({ children, title, subtitle }) => (
 );
 
 Card.propTypes = {
-    title: PropTypes.string.isRequired,
-    children: PropTypes.node
+    children: PropTypes.node,
+    subtitle: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired
 };
 
 Card.defaultProps = {
