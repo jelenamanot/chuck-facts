@@ -5,8 +5,7 @@ export const setItemToLocalStorage = (storageKey, item) => localStorage.setItem(
 export const setFactToLocalStorage = (fact) => {
     const currentFacts = getItemFromLocalStorage('viewedFacts');
     let updatedFacts;
-    // TODO switch to 10
-    const maxLength = 3;
+    const maxLength = 10;
 
     if (currentFacts && currentFacts.length >= maxLength) {
         currentFacts.pop();

@@ -12,7 +12,8 @@ const FactList = ({ items, onItemClick }) => (
 );
 
 FactList.propTypes = {
-    items: PropTypes.array
+    items: PropTypes.array.isRequired,
+    onItemClick: PropTypes.func.isRequired
 };
 
 export default FactList;

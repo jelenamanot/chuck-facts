@@ -21,6 +21,8 @@ class Search  extends React.PureComponent {
         this.setState({ areResultsShown: false})
     };
 
+    onFocus = () => this.setState({ areResultsShown: true });
+
     render() {
         const { onChange, searchResults, onItemClick } = this.props;
         return(
@@ -34,7 +36,7 @@ class Search  extends React.PureComponent {
                         type="text"
                         className="form-control"
                         placeholder="Type anything"
-                        onFocus={() => this.setState({ areResultsShown: true })}
+                        onFocus={this.onFocus}
                         onChange={onChange}
                     />
                 </div>
@@ -46,6 +48,7 @@ class Search  extends React.PureComponent {
 
 Search.propTypes = {
     onChange: PropTypes.func.isRequired,
+    onItemClick: PropTypes.func.isRequired,
     searchResults: PropTypes.array
 };
 

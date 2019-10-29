@@ -10,7 +10,7 @@ export function getSingleFact(dispatch, factId) {
         factId
     });
 }
-export function getSingleFactEmpty(dispatch) {
+export function setSingleFactEmpty(dispatch) {
     dispatch({
         type: ActionTypes.SET_SINGLE_FACT_EMPTY
     });

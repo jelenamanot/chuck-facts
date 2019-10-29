@@ -12,7 +12,7 @@ import SingleFact from './screens/single-fact/single-fact';
 const App = () => {
     return (
         <Provider store={store}>
-            <div className='container'>
+            <div className="container p-5">
                 <Router>
                     <Switch>
                         <Route path="/" exact component={Facts} />
