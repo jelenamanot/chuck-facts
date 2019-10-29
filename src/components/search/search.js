@@ -35,7 +35,6 @@ class Search  extends React.PureComponent {
                         className="form-control"
                         placeholder="Type anything"
                         onFocus={() => this.setState({ areResultsShown: true })}
-                        // TODO Switch to onChange with debounce
                         onChange={onChange}
                     />
                 </div>

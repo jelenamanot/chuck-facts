@@ -11,14 +11,27 @@ import FactListItem from '../../components/fact-list-item/fact-list-item';
 class Facts extends React.Component {
     componentWillUnmount() {
         this.props.setFactsEmpty();
+        if (this.debounce) {
+            clearTimeout(this.debounce);
+        }
     }
+
+    onChange = (e) => {
+        const query = e.target.value;
+        if (this.debounce) {
+            clearTimeout(this.debounce);
+        }
+        if (query.length >= 3) {
+            this.debounce = setTimeout(() => this.props.getFacts(query), 500);
+        }
+    };
 
     render() {
         const isRandom = true;
         return (
             <div>
                 <Search
-                    onChange={(e) => this.props.getFacts(e.target.value)}
+                    onChange={this.onChange}
                     searchResults={this.props.facts}
                     onItemClick={(fact) => this.props.setViewedFact(fact)}
                 />
