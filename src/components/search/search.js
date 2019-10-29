@@ -7,10 +7,27 @@ class Search  extends React.PureComponent {
     state = {
         areResultsShown: false
     };
+
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside, false);
+    }
+
+    componentWillUnmount() {
+        document.addEventListener('mousedown', this.handleClickOutside, false);
+    }
+
+    handleClickOutside = (e) => {
+        if (this.node && this.node.contains(e.target)) { return; }
+        this.setState({ areResultsShown: false})
+    };
+
     render() {
         const { onChange, searchResults, onItemClick } = this.props;
         return(
-            <form className="search w-50 position-relative mx-auto">
+            <form
+                ref={node => this.node = node}
+                className="search w-50 position-relative mx-auto"
+            >
                 <div className="form-group">
                     <h3>Search for Chuck facts</h3>
                     <input
